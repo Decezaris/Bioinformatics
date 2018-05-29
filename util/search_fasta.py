@@ -44,6 +44,7 @@ def search(fasta, start, end, gene_name):
 
 
 def search_gen(fasta, start, end, gene_name):
+<<<<<<< HEAD
     index = pickle.load(open(fasta + '.fai', "rb"))
 
     seq = ''
@@ -67,16 +68,71 @@ def search_gen(fasta, start, end, gene_name):
                     elif end > (index[gene_name][line_num][1]):
                         yield line[start_pos:]
 
+=======
+   index = pickle.load(open(fasta + '.fai', "rb"))
+
+    seq = ''
+    #print (index)
+    with open(fasta, 'r') as f:
+        #print (index[gene_name].keys())
+        for line_num, line in enumerate(f, 1):
+            line = line.strip()
+            #print (line_num)
+            #print ('Tche')
+            #print (start)
+            # if the line num was indexed
+            if line_num in index[gene_name].keys():
+                #print(start, index[gene_name][line_num][0], end , index[gene_name][line_num][1])
+                    
+                if start >= index[gene_name][line_num][0] and start <= index[gene_name][line_num][1]:  # find the starting line
+                    start_pos = start - index[gene_name][line_num][0] 
+
+                    #start and end on the same line
+                    if end <= index[gene_name][line_num][1]:
+                        end_pos = end - index[gene_name][line_num][0] +1
+                        
+                       
+                        #############print(f'Na linha:  start_pos: {start_pos} end_pos: {end_pos}')
+                        yield line[start_pos:end_pos]
+                        #seq = line[start_pos:end_pos]
+                        
+                        break
+
+                    # starts in this line but ends in another line
+                    elif end > (index[gene_name][line_num][1]):
+                        
+                        yield line[start_pos:]
+                        #seq = line[start_pos:]
+
+
+
+>>>>>>> 97d6ae53e504e503f2bc8741fb2f0b2190c9e4b7
                 # The start was in another line and the end might be or not in this line (:. len(seq) >0)
                 if start < index[gene_name][line_num][0]:
 
                     # seq extends beyond this line
                     if end > index[gene_name][line_num][1]:
+<<<<<<< HEAD
                         yield line[:]
 
                     elif end <= index[gene_name][line_num][1]:
                         end_pos = end - index[gene_name][line_num][0] + 1
                         yield line[:end_pos]
+=======
+                        
+                        yield line[:]
+                        #seq += line[:]
+
+
+                    # seq ends in this line
+                    elif end<= index[gene_name][line_num][1]:
+                        
+                        end_pos = end - index[gene_name][line_num][0] +1
+                        yield line[:end_pos]
+                        #seq += line[:end_pos]
+                        break
+                         
+>>>>>>> 97d6ae53e504e503f2bc8741fb2f0b2190c9e4b7
 
 
 def len(fasta, gene_name=None):
