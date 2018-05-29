@@ -68,12 +68,15 @@ def main():
         start = args.start
         end = args.end
         gene_name = args.gene
-        seq = search_fasta.search_gen(fasta, start, end, gene_name)
-        #seq = search_fasta.search(fasta, start, end, gene_name)
+        #seq = search_fasta.search_gen(fasta, start, end, gene_name)
+        seq = search_fasta.search(fasta, start, end, gene_name)
 
         print('>{gene}:{start}-{end}'.format(gene=gene_name,start=start,end=end))
 
-        print(next(seq))
+        for g in seq:
+            print(g)
+        print('\n')
+        print(seq)
 
     if hasattr(args, 'len') and args.len:   # arg.len is True
         fasta = args.file
